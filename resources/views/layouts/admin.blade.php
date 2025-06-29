@@ -132,23 +132,6 @@
               <span class="link-title">Coupon</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#uiComponents" role="button" aria-expanded="false" aria-controls="uiComponents">
-              <i class="link-icon" data-feather="feather"></i>
-              <span class="link-title">Order Management</span>
-              <i class="link-arrow" data-feather="chevron-down"></i>
-            </a>
-            <div class="collapse" id="uiComponents">
-              <ul class="nav sub-menu">
-                <li class="nav-item">
-                  <a href="{{route('order.view')}}" class="nav-link">Orders</a>
-                </li>
-                <li class="nav-item">
-                  <a href="{{route('cancel.requests')}}" class="nav-link">Cancel Requests</a>
-                </li>
-              </ul>
-            </div>
-          </li>
         </ul>
       </div>
     </nav>
