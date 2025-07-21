@@ -52,7 +52,7 @@
                                                 }
                                             @endphp
                                             <td class="text-wrap">{{implode(',', $tag_list)}}</td>
-                                            <td>{{$product->price}}</td>
+                                            <td>{{$product->first_inventory?$product->first_inventory->price:'N/A'}}</td>
                                             <td>{{($product->discount?$product->discount.'%':'')}}</td>
                                             <td class="{{(\App\Models\Inventory::where('product_id', $product->id)->count() != 0?'text-info':'text-danger')}}">{{(\App\Models\Inventory::where('product_id', $product->id)->count() != 0?'In Stock':'Out of Stock')}}</td>
                                             <td>

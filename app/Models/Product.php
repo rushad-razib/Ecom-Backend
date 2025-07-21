@@ -17,6 +17,12 @@ class Product extends Model
         return $this->belongsTo(Subcategory::class, 'subcategory_id');
     }
     function rel_to_inventory(){
-        return $this->hasMany(Inventory::class, 'product_id', 'id');
+        return $this->hasMany(Inventory::class);
+    }
+    function first_inventory(){
+        return $this->hasOne(Inventory::class, 'product_id')->oldest();
+    }
+    function rel_to_gallery(){
+        return $this->hasMany(Gallery::class, 'product_id');
     }
 }

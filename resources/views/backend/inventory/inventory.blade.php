@@ -27,8 +27,8 @@
                                     <td>{{$inventory->rel_to_color->name}}</td>
                                     <td>{{$inventory->rel_to_size->name}}</td>
                                     <td>{{$inventory->quantity}}</td>
-                                    <td>{{$inventory->rel_to_product->price}}</td>
-                                    <td>{{($inventory->rel_to_product->after_discount?$inventory->rel_to_product->after_discount:'')}}</td>
+                                    <td>{{$inventory->price}}</td>
+                                    <td>{{($inventory->after_discount?$inventory->after_discount:'')}}</td>
                                     <td>
                                         @can('inventory_delete')
                                         <a data-link="{{route('inventory.del', $inventory->id)}}" class="text-danger del cursor-pointer"><i class="fas fa-trash fa-xl"></i></a>
@@ -75,6 +75,10 @@
                             <div class="mb-3">
                                 <label for="quantity" class="form-label">Quantity</label>
                                 <input type="number" class="form-control" name="quantity">
+                            </div>
+                            <div class="mb-3">
+                                <label for="price" class="form-label">Price</label>
+                                <input type="number" class="form-control" name="price">
                             </div>
                             <div class="mb-3">
                                 <button type="submit" class="btn btn-primary">Add</button>

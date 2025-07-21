@@ -14,6 +14,6 @@ class Inventory extends Model
         return $this->belongsTo(Size::class, 'size_id');
     }
     function rel_to_product(){
-        return $this->belongsTo(Product::class, 'product_id');
+        return $this->belongsTo(Product::class);
     }
 }

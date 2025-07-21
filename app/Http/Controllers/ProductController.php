@@ -25,7 +25,7 @@ class ProductController extends Controller
     function product_view(){
         $tags = Tag::all();
         $categories = Category::all();
-        $products = Product::all();
+        $products = Product::with('rel_to_inventory', 'first_inventory')->get();
         $inventories = Inventory::all();
         $subcategories = Subcategory::all();
         $brands = Brand::all();
@@ -63,7 +63,6 @@ class ProductController extends Controller
     function product_store(Request $request){
         $request->validate([
             'name'=>['required', 'unique:products'],
-            'price'=>'required',
             'category'=>'required',
             'subcategory'=>'required',
             'desp'=>'required',
@@ -85,8 +84,6 @@ class ProductController extends Controller
         $product_id = Product::insertGetId([
             'name'=>mb_convert_case($request->name, MB_CASE_TITLE, 'utf-8'),
             'discount'=>$request->discount,
-            'price'=>$request->price,
-            'after_discount'=>$request->price-($request->price * $request->discount/100),
             'category_id'=>$request->category,
             'subcategory_id'=>$request->subcategory,
             'tag_id'=>$tags,
@@ -248,12 +245,13 @@ class ProductController extends Controller
             $color = Color::find($request->color);
             $size = Size::find($request->size);
             $sku = Str::upper(Str::slug(implode('-', array_slice(explode(' ', $product->name), 0, 2)), '-')).'-'.Str::upper(substr($color->name, 0, 2)).'-'.Str::upper(Str::slug(implode('-', array_slice(explode(' ', $size->name), 0, 2)), '-'));
-
             Inventory::insert([
                 'product_id'=>$id,
                 'color_id'=>$request->color,
                 'size_id'=>$request->size,
                 'quantity'=>$request->quantity,
+                'price'=>$request->price,
+                'after_discount'=>$request->price-($request->price * $product->discount/100),
                 'sku'=>$sku,
                 'created_at'=>Carbon::now(),
             ]);
