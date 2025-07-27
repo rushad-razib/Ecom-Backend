@@ -12,19 +12,13 @@
                         <form action="{{route('product.update', $product->id)}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
-                                <div class="col-lg-4">
+                                <div class="col-lg-6">
                                     <div class="mb-3">
                                         <label for="name" class="form-label">Name</label>
                                         <input type="text" name="name" class="form-control" value="{{$product->name}}">
                                         @error('name')
                                             <strong class="text text-danger">{{$message}}</strong>
                                         @enderror
-                                    </div>
-                                </div>
-                                <div class="col-lg-2">
-                                    <div class="mb-3">
-                                        <label for="price" class="form-label">Price</label>
-                                        <input type="number" name="price" class="form-control" value="{{$product->price}}">
                                     </div>
                                 </div>
                                 <div class="col-lg-2">

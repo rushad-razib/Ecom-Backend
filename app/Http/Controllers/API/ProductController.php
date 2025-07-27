@@ -18,14 +18,14 @@ class ProductController extends Controller
     }
 
     function new_arrivals(){
-        $new_arrivals = Product::latest()->take(4)->get();
+        $new_arrivals = Product::with('first_inventory')->latest()->take(4)->get();
 
         return response()->json([
             'new_arrivals'=>$new_arrivals,
         ]);
     }
     function all_products(){
-        $products = Product::with('rel_to_inventory')->get();
+        $products = Product::with('rel_to_inventory')->latest()->get();
 
         return response()->json([
             'products'=>$products,

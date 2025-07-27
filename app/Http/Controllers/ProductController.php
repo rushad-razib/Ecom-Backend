@@ -152,7 +152,6 @@ class ProductController extends Controller
 
             Product::find($id)->update([
                 'name'=>$request->name,
-                'price'=>$request->price,
                 'discount'=>$request->discount,
                 'after_discount'=>$request->price - ($request->price * $request->discount/100),
                 'category_id'=>$request->category,
@@ -165,7 +164,6 @@ class ProductController extends Controller
         else{
             Product::find($id)->update([
                 'name'=>$request->name,
-                'price'=>$request->price,
                 'discount'=>$request->discount,
                 'after_discount'=>$request->price - ($request->price * $request->discount/100),
                 'category_id'=>$request->category,

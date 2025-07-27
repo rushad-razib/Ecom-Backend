@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\CartController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\Api\CustomerApiAuthController;
 use App\Http\Controllers\Api\CustomerApiController;
@@ -28,4 +29,7 @@ Route::get('product/details/{id}', [ProductController::class, 'get_product_detai
 // Category APIs
 Route::get('get/categories', [CategoryController::class, 'get_categories']);
 
+// Cart APIs
+Route::post('/cart/store', [CartController::class, 'cart_store']);
+Route::get('/cart/{id}', [CartController::class, 'cart']);
 
