@@ -36,7 +36,10 @@ class CartController extends Controller
     }
 
     function cart($id){
-        $carts = Cart::where('customer_id', $id)->get();
+        $carts = Cart::with('rel_to_product')->where('customer_id', $id)->get();
+        $carts->each(function($cart){
+            $cart->inventory = $cart->inventory;
+        });
         return response()->json([
             'carts'=>$carts,
         ]);
