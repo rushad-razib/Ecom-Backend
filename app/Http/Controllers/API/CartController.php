@@ -44,4 +44,17 @@ class CartController extends Controller
             'carts'=>$carts,
         ]);
     }
+    
+    function cart_update(Request $request){
+
+        $carts = $request->input('carts');
+        foreach ($carts as $cart) {
+            Cart::where('id', $cart['id'])->update([
+                'quantity'=>$cart['quantity'],
+            ]);
+        }
+        return response()->json([
+            'success'=>'Cart updated'
+        ]);
+    }
 }

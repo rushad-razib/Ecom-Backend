@@ -2,8 +2,7 @@
 
 use App\Http\Controllers\API\CartController;
 use App\Http\Controllers\API\CategoryController;
-use App\Http\Controllers\Api\CustomerApiAuthController;
-use App\Http\Controllers\Api\CustomerApiController;
+use App\Http\Controllers\API\CheckoutController;
 use App\Http\Controllers\API\CustomerController;
 use App\Http\Controllers\API\ProductController;
 use Illuminate\Http\Request;
@@ -32,4 +31,9 @@ Route::get('get/categories', [CategoryController::class, 'get_categories']);
 // Cart APIs
 Route::post('/cart/store', [CartController::class, 'cart_store']);
 Route::get('/cart/{id}', [CartController::class, 'cart']);
+Route::post('/cart/update', [CartController::class, 'cart_update']);
+
+// Order APIs
+Route::post('coupon/apply', [CheckoutController::class, 'coupon_apply']);
+Route::post('order', [CheckoutController::class, 'order']);
 

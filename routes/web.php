@@ -15,11 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
 
-    // Coupon Routes
-    Route::get('/coupon/view', [CouponController::class, 'coupon_view'])->name('coupon.view');
-    Route::post('/coupon/store', [CouponController::class, 'coupon_store'])->name('coupon.store');
-    Route::get('/coupon/delete/{id}', [CouponController::class, 'coupon_del'])->name('coupon.del');
-    Route::get('/coupon/status/{id}', [CouponController::class, 'coupon_status'])->name('coupon.status');
+    
 
     // Admin Routes
     Route::get('/', [backendController::class, 'dashboard'])->name('dashboard');
@@ -98,14 +94,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/inventory/delete/{id}',[ProductController::class, 'inventory_del'])->name('inventory.del');
     Route::post('/getGalImage',[ProductController::class, 'getGalImage']);
 
-    //Order Routes
-    Route::get('/order/view', [OrderController::class, 'order_view'])->name('order.view');
-    Route::post('/order/cancel/{id}', [OrderController::class, 'order_cancel'])->name('order.cancel');
-    Route::get('/cancel/manage/{id}', [OrderController::class, 'cancel_manage'])->name('cancel.manage');
-    Route::post('/cancel/order/{id}', [OrderController::class, 'cancel_order'])->name('cancel.order');
-    Route::get('/order/cancel/requests', [OrderController::class, 'cancel_requests'])->name('cancel.requests');
-    Route::get('/order/cancel/reason/{id}', [OrderController::class, 'cancel_reason'])->name('cancel.reason');
-    Route::get('/order/cancel/deny/{id}', [OrderController::class, 'cancel_deny'])->name('cancel.deny');
+    // Coupon Routes
+    Route::get('/coupon', [CouponController::class, 'coupon'])->name('coupon');
+    Route::post('/coupon/store', [CouponController::class, 'coupon_store'])->name('coupon.store');
+    Route::get('/coupon/delete/{id}', [CouponController::class, 'coupon_delete'])->name('coupon.delete');
 
     // Role Routes
     Route::get('/role/view', [RoleController::class, 'role_view'])->name('role.view');

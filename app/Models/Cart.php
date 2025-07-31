@@ -16,4 +16,6 @@ class Cart extends Model
         ->where('size_id', $this->size_id)
         ->first();
     }
+
+    protected $guarded = ['id'];
 }

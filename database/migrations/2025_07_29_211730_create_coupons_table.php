@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('coupon');
             $table->integer('type');
             $table->integer('amount');
+            $table->integer('limit')->nullable();
+            $table->integer('status')->default(1);
             $table->date('validity');
-            $table->integer('limit');
-            $table->integer('status');
             $table->timestamps();
         });
     }

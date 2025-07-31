@@ -6,5 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Coupon extends Model
 {
-    protected $guarded = ['id'];
+    protected $casts = [
+        'validity'=>'date',
+    ];
 }
