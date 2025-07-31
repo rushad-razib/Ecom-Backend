@@ -3,14 +3,17 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Mail\InvoiceMail;
 use App\Models\Billing;
 use App\Models\Cart;
 use App\Models\Coupon;
 use App\Models\Customer;
+use App\Models\Inventory;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class CheckoutController extends Controller
 {
@@ -64,10 +67,10 @@ class CheckoutController extends Controller
         
         
         $order_id = uniqid();
-
-        Order::insert([
+        $customer_id = $request->customer_id;
+        $order = Order::create([
             'order_id'=>$order_id,
-            'customer_id'=>$request->customer_id,
+            'customer_id'=>$customer_id,
             'subtotal'=>$request->subtotal,
             'coupon_discount'=>$request->discount,
             'charge'=>$request->charge,
@@ -83,7 +86,7 @@ class CheckoutController extends Controller
         foreach($carts as $cart){
             OrderProduct::insert([
                 'order_id'=>$order_id,
-                'customer_id'=>$request->customer_id,
+                'customer_id'=>$customer_id,
                 'product_id'=>$cart->product_id,
                 'color_id'=>$cart->color_id,
                 'size_id'=>$cart->size_id,
@@ -91,8 +94,10 @@ class CheckoutController extends Controller
                 'price'=>$cart->inventory->after_discount,
                 'created_at'=>Carbon::now(),
             ]);
+            // Inventory::where('product_id', $cart->product_id)->where('color_id', $cart->color_id)->where('size_id', $cart->size_id)->decrement('quantity', $cart->quantity);
         }
-        $customer = Customer::find($request->customer_id);
+        // Cart::where('customer_id', $request->customer_id)->delete();
+        $customer = Customer::find($customer_id);
         Billing::insert([
             'order_id'=>$order_id,
             'customer_name'=>$customer->name,
@@ -105,8 +110,9 @@ class CheckoutController extends Controller
             'created_at'=>Carbon::now(),
         ]);
 
+        Mail::to($customer->email)->send(new InvoiceMail($order_id));
         return response()->json([
-            'success'=>'Order placed successfully'
+            'success'=>'Order placed successfully',
         ]);
     }
 
