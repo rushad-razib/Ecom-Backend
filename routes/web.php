@@ -110,6 +110,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/role/delete/{id}', [RoleController::class, 'role_delete'])->name('role.delete');
     Route::get('/role/unassign/{id}', [RoleController::class, 'role_unassign'])->name('role.unassign');
 
+    // Order Routes
+    Route::get('/orders', [OrderController::class, 'order_view'])->name('order.view');
+    Route::post('/order/status/{id}', [OrderController::class, 'order_status'])->name('order.status');
+    Route::get('/order/info/{order_id}', [OrderController::class, 'order_info'])->name('order.info');
+
 });
 
 

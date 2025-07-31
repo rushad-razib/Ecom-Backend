@@ -132,6 +132,12 @@
               <span class="link-title">Coupon</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{{route('order.view')}}" class="nav-link">
+              <i class="link-icon" data-feather="box"></i>
+              <span class="link-title">Orders</span>
+            </a>
+          </li>
         </ul>
       </div>
     </nav>
