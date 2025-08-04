@@ -11,6 +11,7 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\taskController;
 use App\Http\Controllers\userController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\StripePaymentController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
@@ -114,6 +115,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders', [OrderController::class, 'order_view'])->name('order.view');
     Route::post('/order/status/{id}', [OrderController::class, 'order_status'])->name('order.status');
     Route::get('/order/info/{order_id}', [OrderController::class, 'order_info'])->name('order.info');
+    Route::get('/order/invoice/download/{order_id}', [OrderController::class, 'order_invoice_download'])->name('order.invoice.download');
+
+    // Stripe Routes
+    Route::controller(StripePaymentController::class)->group(function(){
+        Route::get('stripe', 'stripe');
+        Route::post('stripe/{order_id}', 'stripePost')->name('stripe.post');
+    });
 
 });
 

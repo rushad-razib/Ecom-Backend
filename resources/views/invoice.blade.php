@@ -150,8 +150,8 @@
             <tr>
                 <th>Product</th>
                 <th>Quantity</th>
-                <th>Price</th>
-                <th>Total</th>
+                <th>Price (BDT)</th>
+                <th>Total (BDT)</th>
             </tr>
             @php
                 $sub = 0;
@@ -160,8 +160,8 @@
             <tr>
                 <td>{{$ordered_items->rel_to_product->name}}</td>
                 <td>{{$ordered_items->quantity}}</td>
-                <td>&#2547;{{$ordered_items->price}}</td>
-                <td>&#2547;{{$ordered_items->price * $ordered_items->quantity}}</td>
+                <td>{{$ordered_items->price}}</td>
+                <td>{{$ordered_items->price * $ordered_items->quantity}}</td>
             </tr>
             @endforeach
         </table>
@@ -169,24 +169,23 @@
         <table class="totals">
             <tr>
                 <td class="label">Subtotal:</td>
-                <td>&#2547;{{$orders->subtotal}}</td>
+                <td>{{$orders->subtotal}} BDT</td>
             </tr>
             <tr>
                 <td class="label">Coupon Discount:</td>
-                <td>- &#2547;{{$orders->discount}}</td>
+                <td>- {{$orders->discount}} BDT</td>
             </tr>
             <tr>
                 <td class="label">Charge:</td>
-                <td>&#2547;{{$orders->charge}}</td>
+                <td>{{$orders->charge}} BDT</td>
             </tr>
             <tr>
                 <td class="label"><strong>Grand Total:</strong></td>
-                <td><strong>&#2547;{{$orders->total}}</strong></td>
+                <td><strong>{{$orders->total}} BDT</strong></td>
             </tr>
         </table>
         
         <div class="footer">
-            <a target="_blank" href="">View Order Status</a>
             <p>Thank you for your business!</p>
         </div>
     </div>

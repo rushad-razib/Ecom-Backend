@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderProduct;
+use PDF;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -32,6 +33,14 @@ class OrderController extends Controller
             'products'=> $products,
             'customer'=> $customer,
         ]);
+    }
+
+    function order_invoice_download($order_id){
+        $orders = Order::where('order_id', $order_id)->first();
+        $pdf = PDF::loadView('invoice', [
+            'order_id'=>$order_id,
+        ]);
+        return $pdf->stream('invoice.pdf');
     }
 
 }

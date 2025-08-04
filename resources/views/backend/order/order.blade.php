@@ -14,7 +14,6 @@
                                     <th class="text-center">SL</th>
                                     <th class="text-center">Order ID</th>
                                     <th class="text-center">Customer Name</th>
-                                    <th class="text-center">Coupon (-)(&#2547;)</th>
                                     <th class="text-center">Total (&#2547;)</th>
                                     <th class="text-center">Location</th>
                                     <th class="text-center">Status</th>
@@ -27,7 +26,6 @@
                                 <td class="text-center">{{ $sl+1 }}</td>
                                 <td class="text-center">{{ $order->order_id }}</td>
                                 <td class="text-center">{{ $order->rel_to_customer->name }}</td>
-                                <td class="text-center">{{ $order->coupon }}</td>
                                 <td class="text-center">{{ $order->total }}</td>
                                 <td class="text-center">{{\App\Models\Billing::where('order_id', $order->order_id)->first()->street_address}}</td>
                                 <td class="text-center">
@@ -42,7 +40,10 @@
                                     </select>
                                     </form>
                                 </td>
-                                <td class="text-center"><a href="{{route('order.info', $order->order_id)}}"><i title="view" class="fas fa-eye fa-xl text-success"></i></a></td>
+                                <td class="text-center">
+                                    <a target="_blank" title="Download Invoice" href="{{route('order.invoice.download', $order->order_id)}}" class="pr-2"><i class="fa-solid fa-download fa-xl"></i></a>
+                                    <a href="{{route('order.info', $order->order_id)}}"><i title="view" class="fas fa-eye fa-xl text-success"></i></a>
+                                </td>
                             </tr>
                             @endforeach
                             </tbody>

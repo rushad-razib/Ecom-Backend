@@ -4,11 +4,14 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\Order;
+use App\Models\OrderProduct;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use PhpParser\Node\Stmt\TryCatch;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CustomerController extends Controller
 {
@@ -118,6 +121,22 @@ class CustomerController extends Controller
             }
         }
         
+    }
+
+    function myorders($id){
+        $orders = Order::where('customer_id', $id)->get();
+        return response()->json([
+            'orders'=>$orders,
+        ]);
+    }
+
+    // Download invoice PDF customers
+    function order_invoice_download($order_id){
+        $orders = Order::where('order_id', $order_id)->first();
+        $pdf = PDF::loadView('invoice', [
+            'order_id'=>$order_id,
+        ]);
+        return $pdf->download('invoice.pdf');
     }
 
 }

@@ -18,6 +18,9 @@ Route::post('customer/register', [CustomerController::class, 'register']);
 Route::post('customer/login', [CustomerController::class, 'login']);
 Route::post('customer/logout', [CustomerController::class, 'logout']);
 Route::post('customer/update/{id}', [CustomerController::class, 'customer_update']);
+Route::get('myorders/{id}', [CustomerController::class, 'myorders']);
+Route::get('/order/invoice/download/{order_id}', [CustomerController::class, 'order_invoice_download']);
+
 
 // Product APIs
 Route::get('get/products', [ProductController::class, 'get_products']);
@@ -36,4 +39,7 @@ Route::post('/cart/update', [CartController::class, 'cart_update']);
 // Order APIs
 Route::post('coupon/apply', [CheckoutController::class, 'coupon_apply']);
 Route::post('order', [CheckoutController::class, 'order']);
+
+
+
 

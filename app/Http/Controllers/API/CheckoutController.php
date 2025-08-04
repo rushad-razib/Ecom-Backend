@@ -11,6 +11,7 @@ use App\Models\Customer;
 use App\Models\Inventory;
 use App\Models\Order;
 use App\Models\OrderProduct;
+use App\Models\StripeOrder;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -65,55 +66,78 @@ class CheckoutController extends Controller
             'phone'=>'required',
         ]);
         
-        
         $order_id = uniqid();
         $customer_id = $request->customer_id;
-        $order = Order::create([
-            'order_id'=>$order_id,
-            'customer_id'=>$customer_id,
-            'subtotal'=>$request->subtotal,
-            'coupon_discount'=>$request->discount,
-            'charge'=>$request->charge,
-            'total'=>$request->subtotal-$request->discount+$request->charge,
-            'payment_method'=>$request->payment_method,
-            'created_at'=>Carbon::now(),
-        ]);
-
-        $carts = Cart::with('rel_to_product')->where('customer_id', $request->customer_id)->get();
-        $carts->each(function($cart){
-            $cart->inventory = $cart->inventory;
-        });
-        foreach($carts as $cart){
-            OrderProduct::insert([
+        
+        if($request->payment_method == 'COD'){
+            Order::insert([
                 'order_id'=>$order_id,
                 'customer_id'=>$customer_id,
-                'product_id'=>$cart->product_id,
-                'color_id'=>$cart->color_id,
-                'size_id'=>$cart->size_id,
-                'quantity'=>$cart->quantity,
-                'price'=>$cart->inventory->after_discount,
+                'subtotal'=>$request->subtotal,
+                'coupon_discount'=>$request->discount,
+                'charge'=>$request->charge,
+                'total'=>$request->subtotal-$request->discount+$request->charge,
+                'payment_method'=>$request->payment_method,
                 'created_at'=>Carbon::now(),
             ]);
-            // Inventory::where('product_id', $cart->product_id)->where('color_id', $cart->color_id)->where('size_id', $cart->size_id)->decrement('quantity', $cart->quantity);
-        }
-        // Cart::where('customer_id', $request->customer_id)->delete();
-        $customer = Customer::find($customer_id);
-        Billing::insert([
-            'order_id'=>$order_id,
-            'customer_name'=>$customer->name,
-            'company_name'=>$request->company,
-            'street_address'=>$request->address,
-            'floor'=>$request->floor,
-            'city'=>$request->city,
-            'phone'=>$request->phone,
-            'email'=>$customer->email,
-            'created_at'=>Carbon::now(),
-        ]);
 
-        Mail::to($customer->email)->send(new InvoiceMail($order_id));
-        return response()->json([
-            'success'=>'Order placed successfully',
-        ]);
+            $carts = Cart::with('rel_to_product')->where('customer_id', $request->customer_id)->get();
+            $carts->each(function($cart){
+                $cart->inventory = $cart->inventory;
+            });
+            foreach($carts as $cart){
+                OrderProduct::insert([
+                    'order_id'=>$order_id,
+                    'customer_id'=>$customer_id,
+                    'product_id'=>$cart->product_id,
+                    'color_id'=>$cart->color_id,
+                    'size_id'=>$cart->size_id,
+                    'quantity'=>$cart->quantity,
+                    'price'=>$cart->inventory->after_discount,
+                    'created_at'=>Carbon::now(),
+                ]);
+                // Inventory::where('product_id', $cart->product_id)->where('color_id', $cart->color_id)->where('size_id', $cart->size_id)->decrement('quantity', $cart->quantity);
+            }
+            // Cart::where('customer_id', $request->customer_id)->delete();
+            $customer = Customer::find($customer_id);
+            Billing::insert([
+                'order_id'=>$order_id,
+                'customer_name'=>$customer->name,
+                'company_name'=>$request->company,
+                'street_address'=>$request->address,
+                'floor'=>$request->floor,
+                'city'=>$request->city,
+                'phone'=>$request->phone,
+                'email'=>$customer->email,
+                'created_at'=>Carbon::now(),
+            ]);
+
+            Mail::to($customer->email)->send(new InvoiceMail($order_id));
+            return response()->json([
+                'success'=>'Order placed successfully',
+            ]);
+        }
+        else if($request->payment_method == 'stripe'){
+            $order_id = uniqid();
+            StripeOrder::insert([
+                'order_id'=>$order_id,
+                'customer_id'=>$request->customer_id,
+                'subtotal'=>$request->subtotal,
+                'coupon_discount'=>$request->discount,
+                'charge'=>$request->charge,
+                'total'=>$request->subtotal-$request->discount+$request->charge,
+                'payment_method'=>$request->payment_method,
+                'company_name'=>$request->company,
+                'street_address'=>$request->address,
+                'floor'=>$request->floor,
+                'city'=>$request->city,
+                'phone'=>$request->phone,
+                'created_at'=>Carbon::now(),
+            ]);
+            return response()->json([
+                'redirect'=>url('stripe?order_id='.$order_id),
+            ]);
+        }
     }
 
 }
