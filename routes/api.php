@@ -5,6 +5,7 @@ use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\CheckoutController;
 use App\Http\Controllers\API\CustomerController;
 use App\Http\Controllers\API\ProductController;
+use App\Http\Controllers\API\SearchFilterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,7 +30,9 @@ Route::get('all/products', [ProductController::class, 'all_products']);
 Route::get('product/details/{id}', [ProductController::class, 'get_product_details']);
 
 // Category APIs
-Route::get('get/categories', [CategoryController::class, 'get_categories']);
+Route::get('get/categories', [SearchFilterController::class, 'get_categories']);
+Route::get('get/colors', [SearchFilterController::class, 'get_colors']);
+Route::post('product/search', [SearchFilterController::class, 'search']);
 
 // Cart APIs
 Route::post('/cart/store', [CartController::class, 'cart_store']);

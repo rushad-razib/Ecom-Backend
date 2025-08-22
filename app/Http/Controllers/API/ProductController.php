@@ -25,7 +25,7 @@ class ProductController extends Controller
         ]);
     }
     function all_products(){
-        $products = Product::with('rel_to_inventory')->latest()->get();
+        $products = Product::with(['rel_to_inventory', 'first_inventory'])->latest()->get();
 
         return response()->json([
             'products'=>$products,

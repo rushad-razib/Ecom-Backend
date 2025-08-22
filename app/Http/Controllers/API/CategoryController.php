@@ -8,11 +8,5 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    function get_categories(){
-        $categories = Category::all();
-
-        return response()->json([
-            'categories'=>$categories,
-        ]);
-    }
+    
 }
